@@ -9,7 +9,7 @@ class Cursor:
         self.y = 0
         terminal = Terminal()
         self.max_x = terminal.columns
-        self.max_y = terminal.rows
+        self.max_y = terminal.rows - 1  # Account for home row
 
     def return_home(self):
         self.x, self.y = 0, 0
@@ -17,9 +17,11 @@ class Cursor:
 
     def set_pos(self, point: Point):
         self.x, self.y = point.x, point.y + 1
-        print(f"{term.Escape}{self.x};{self.y}H", end="")
+        print(f"{term.Escape}{self.y};{self.x}H", end="")
 
     def place_letter(self, point: Point, letter: str):
+        if point.y > self.max_y:
+            return
         self.set_pos(point)
         print(letter, end="")
 
@@ -30,7 +32,14 @@ class Cursor:
             self.place_letter(point, "x")
 
     def draw_rect(self, x: int, y: int, height: int, width: int):
-        self.draw_line(x, y, x + width, y)
-        self.draw_line(x, y + height, x + width, y + height)
-        self.draw_line(x, y, x, y + height)
-        self.draw_line(x + width, y, x + width, y + height)
+        rect = Rectangle(Point(x, y), height, width)
+        points = rect.list_points()
+        for point in points:
+            self.place_letter(point, "x")
+
+    def draw_circle(self, x: int, y: int, radius: int):
+        pass
+
+    def draw_custom_ascii(self, x, y, ascii):
+        self.set_pos(Point(x, y))
+        print(ascii, end="")

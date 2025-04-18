@@ -17,19 +17,71 @@ class Line:
         self.p2 = p2
         self.slope = self._find_slope()
 
-    def list_points(self) -> list[Point]:
-        points = [Point(self.p2.x, self.p2.y)]
-        x = self.p2.x
-        y = self.p2.y
+    def _draw_lineH(self) -> list[Point]:
+        points = []
+        x1, y1 = self.p1.x, self.p1.y
+        x2, y2 = self.p2.x, self.p2.y
+        if x1 > x2:
+            x1, x2 = x2, x1
+            y1, y2 = y2, y1
 
-        while x > self.p1.x and y > self.p1.y:
-            x -= self.slope[NUMERATOR]
-            y -= self.slope[DENOMINATOR]
-            if x % 1 == 0 and y % 1 == 0:
-                points.append(Point(x, y))
+        delta_x = x2 - x1
+        delta_y = y2 - y1
 
-        points.append(Point(self.p1.x, self.p1.y))
+        dir = -1 if delta_y < 0 else 1
+        delta_y *= dir
+        if delta_x != 0:
+            y = y1
+            decision = 2*delta_y - delta_x
+            for i in range(delta_x + 1):
+                points.append(Point(x1 + i, y))
+
+                if decision > 0:
+                    y += dir
+                    decision -= 2*delta_x
+                decision += 2*delta_y
+
         return points
+
+    def _draw_lineV(self) -> list[Point]:
+        points = []
+        x1, y1 = self.p1.x, self.p1.y
+        x2, y2 = self.p2.x, self.p2.y
+        if y1 > y2:
+            x1, x2 = x2, x1
+            y1, y2 = y2, y1
+
+        delta_x = x2 - x1
+        delta_y = y2 - y1
+
+        dir = -1 if delta_x < 0 else 1
+        delta_x *= dir
+        if delta_y != 0:
+            x = x1
+            decision = 2*delta_x - delta_y
+            for i in range(delta_y + 1):
+                points.append(Point(y1 + i, x))
+
+                if decision > 0:
+                    x += dir
+                    decision -= 2*delta_y
+                decision += 2*delta_x
+
+        return points
+
+    def list_points(self) -> list[Point]:
+        """ Terminal 'ratio' not 1 to 1, so I'm wondering
+            if it would be a good idea to 'translate' the users 1 to 1
+            input to match how the terminal would like it printed most?
+
+            As in the math for the slope is wrong and maybe I have to translate it to a good slope?
+            Or cut the line from flattening out?"""
+        x1, y1 = self.p1.x, self.p1.y
+        x2, y2 = self.p2.x, self.p2.y
+        if abs(x2 - x1) > abs(y2 - y1):
+            return self._draw_lineH()
+        else:
+            return self._draw_lineV()
 
     def _find_slope(self):
         x = self.p2.x - self.p1.x
@@ -47,6 +99,16 @@ class Rectangle:
         self.height = height
         self.width = width
 
+    def list_points(self):
+        points = []
+        for i in range(self.x, self.x + self.width + 1):
+            points.append(Point(i, self.y))
+            points.append(Point(i, self.y + self.height))
+        for i in range(self.y, self.y + self.height + 1):
+            points.append(Point(self.x, i))
+            points.append(Point(self.x + self.width, i))
+        return points
+
 
 class Triangle:
     def __init__(self, p1: Point, p2: Point, p3: Point):
@@ -62,6 +124,10 @@ class Circle:
     def __init__(self, center: Point, radius):
         self.x = center.x
         self.y = center.y
+        self.radius = radius
+
+    def list_points():
+        pass
 
 
 def _reduce_fraction(numerator, denominator) -> tuple[int]:

@@ -1,4 +1,4 @@
-import os
+import shutil
 
 
 class Terminal:
@@ -8,6 +8,6 @@ class Terminal:
     Home_pos = f"{Escape}H"
 
     def __init__(self):
-        self.size = os.get_terminal_size()
+        self.size = shutil.get_terminal_size()
         self.rows = self.size.lines
         self.columns = self.size.columns
