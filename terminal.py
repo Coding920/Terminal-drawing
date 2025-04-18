@@ -2,6 +2,11 @@ import os
 
 
 class Terminal:
+    Escape = "\x1b["
+    CR = "\r"
+    NL = "\n"
+    Home_pos = f"{Escape}H"
+
     def __init__(self):
         self.size = os.get_terminal_size()
         self.rows = self.size.lines

@@ -1,13 +1,9 @@
 from terminal import Terminal
+from terminal import Terminal as term
+from shapes import Point, Line, Rectangle, Triangle, Circle
 
 
 class Cursor:
-    Escape = "\x1b["
-    stupid_character_to_stop_thing = "]"
-    CR = "\r"
-    NL = "\n"
-    Home_pos = f"{Escape}H"
-
     def __init__(self):
         self.x = 0
         self.y = 0
@@ -17,20 +13,24 @@ class Cursor:
 
     def return_home(self):
         self.x, self.y = 0, 0
-        print(self.Home_pos, end="")
+        print(term.Home_pos, end="")
 
-    def set_pos(self, x: int, y: int):
-        self.x, self.y = x, y
-        print(f"{self.Escape}{y};{x}H", end="")
+    def set_pos(self, point: Point):
+        self.x, self.y = point.x, point.y + 1
+        print(f"{term.Escape}{self.x};{self.y}H", end="")
 
-    def place_letter(self, x: int, y: int, letter: str):
-        self.set_pos(x, y)
+    def place_letter(self, point: Point, letter: str):
+        self.set_pos(point)
         print(letter, end="")
 
-    def draw_line(self, x1, y1, x2, y2):
-        for i in range(x1, x2):
-            self.place_letter(i, y1, "x")
+    def draw_line(self, p1: Point, p2: Point):
+        line = Line(p1, p2)
+        points = line.list_points()
+        for point in points:
+            self.place_letter(point, "x")
 
     def draw_rect(self, x: int, y: int, height: int, width: int):
-        for i in range(x, width + x + 1):
-            pass
+        self.draw_line(x, y, x + width, y)
+        self.draw_line(x, y + height, x + width, y + height)
+        self.draw_line(x, y, x, y + height)
+        self.draw_line(x + width, y, x + width, y + height)
