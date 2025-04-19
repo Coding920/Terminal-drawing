@@ -60,7 +60,7 @@ class Line:
             x = x1
             decision = 2*delta_x - delta_y
             for i in range(delta_y + 1):
-                points.append(Point(y1 + i, x))
+                points.append(Point(x, y1 + i))
 
                 if decision > 0:
                     x += dir
@@ -69,20 +69,6 @@ class Line:
 
         return points
 
-    def list_points(self) -> list[Point]:
-        """ Terminal 'ratio' not 1 to 1, so I'm wondering
-            if it would be a good idea to 'translate' the users 1 to 1
-            input to match how the terminal would like it printed most?
-
-            As in the math for the slope is wrong and maybe I have to translate it to a good slope?
-            Or cut the line from flattening out?"""
-        x1, y1 = self.p1.x, self.p1.y
-        x2, y2 = self.p2.x, self.p2.y
-        if abs(x2 - x1) > abs(y2 - y1):
-            return self._draw_lineH()
-        else:
-            return self._draw_lineV()
-
     def _find_slope(self):
         x = self.p2.x - self.p1.x
         y = self.p2.y - self.p1.y
@@ -90,6 +76,21 @@ class Line:
             return (x, y)
         reduced_fraction = _reduce_fraction(x, y)
         return reduced_fraction
+
+    def list_points(self) -> list[Point]:
+        """ Terminal 'ratio' not 1 to 1, so I'm wondering
+            if it would be a good idea to 'translate' the users 1 to 1
+            input to match how the terminal would like it printed most?
+
+            As in the math for the slope is wrong and maybe
+            I have to translate it to a good slope?
+            Or cut the line from flattening out?"""
+        x1, y1 = self.p1.x, self.p1.y
+        x2, y2 = self.p2.x, self.p2.y
+        if abs(x2 - x1) > abs(y2 - y1):
+            return self._draw_lineH()
+        else:
+            return self._draw_lineV()
 
 
 class Rectangle:
@@ -101,12 +102,17 @@ class Rectangle:
 
     def list_points(self):
         points = []
-        for i in range(self.x, self.x + self.width + 1):
-            points.append(Point(i, self.y))
-            points.append(Point(i, self.y + self.height))
-        for i in range(self.y, self.y + self.height + 1):
-            points.append(Point(self.x, i))
-            points.append(Point(self.x + self.width, i))
+        lines = []
+        lines.append(Line(Point(self.x, self.y),
+                          Point(self.x, self.y + self.height)))
+        lines.append(Line(Point(self.x, self.y + self.height),
+                          Point(self.x + self.width, self.y + self.height)))
+        lines.append(Line(Point(self.x + self.width, self.y + self.height),
+                          Point(self.x + self.width, self.y)))
+        lines.append(Line(Point(self.x + self.width, self.y),
+                          Point(self.x, self.y)))
+        for line in lines:
+            points.extend(line.list_points())
         return points
 
 
