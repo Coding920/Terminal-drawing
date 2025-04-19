@@ -6,9 +6,10 @@ DENOMINATOR = 1
 
 
 class Point:
-    def __init__(self, x, y):
+    def __init__(self, x, y, letter=None):
         self.x = x
         self.y = y
+        self.letter = letter
 
 
 class Line:
@@ -34,7 +35,7 @@ class Line:
             y = y1
             decision = 2*delta_y - delta_x
             for i in range(delta_x + 1):
-                points.append(Point(x1 + i, y))
+                points.append(Point(x1 + i, y, self.p1.letter))
 
                 if decision > 0:
                     y += dir
@@ -60,7 +61,7 @@ class Line:
             x = x1
             decision = 2*delta_x - delta_y
             for i in range(delta_y + 1):
-                points.append(Point(x, y1 + i))
+                points.append(Point(x, y1 + i, self.p1.letter))
 
                 if decision > 0:
                     x += dir
@@ -97,20 +98,21 @@ class Rectangle:
     def __init__(self, upper_corner: Point, height: int, width: int):
         self.x = upper_corner.x
         self.y = upper_corner.y
+        self.letter = upper_corner.letter
         self.height = height
         self.width = width
 
     def list_points(self):
         points = []
         lines = []
-        lines.append(Line(Point(self.x, self.y),
-                          Point(self.x, self.y + self.height)))
-        lines.append(Line(Point(self.x, self.y + self.height),
-                          Point(self.x + self.width, self.y + self.height)))
-        lines.append(Line(Point(self.x + self.width, self.y + self.height),
-                          Point(self.x + self.width, self.y)))
-        lines.append(Line(Point(self.x + self.width, self.y),
-                          Point(self.x, self.y)))
+        lines.append(Line(Point(self.x, self.y, self.letter),
+                          Point(self.x, self.y + self.height, self.letter)))
+        lines.append(Line(Point(self.x, self.y + self.height, self.letter),
+                          Point(self.x + self.width, self.y + self.height, self.letter)))
+        lines.append(Line(Point(self.x + self.width, self.y + self.height, self.letter),
+                          Point(self.x + self.width, self.y, self.letter)))
+        lines.append(Line(Point(self.x + self.width, self.y, self.letter),
+                          Point(self.x, self.y, self.letter)))
         for line in lines:
             points.extend(line.list_points())
         return points

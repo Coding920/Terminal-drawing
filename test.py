@@ -5,7 +5,8 @@ import shapes as s
 cursor = Cursor()
 for i in range(50):
     cursor.cursor_invisible()
-    cursor.draw_rect(5 + i, 5, 20, 20)
+    upper_corner = s.Point(5 + i, 5 + i, "*")
+    cursor.draw_rect(upper_corner, 20, 20)
     time.sleep(.1)
     cursor.clear_screen()
 cursor.cursor_visible()

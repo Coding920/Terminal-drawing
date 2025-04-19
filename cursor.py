@@ -28,11 +28,15 @@ class Cursor:
         self.x, self.y = point.x, point.y + 1
         print(f"{term.Escape}{self.y};{self.x}H", end="", flush=True)
 
-    def place_letter(self, point: Point, letter: str):
+    def place_letter(self, point: Point):
         if point.y > self.max_y:
             return
         self.set_pos(point)
-        print(letter, end="", flush=True)
+        print(point.letter, end="", flush=True)
+
+    def place_points(self, points: list[Point]):
+        for point in points:
+            self.place_letter(point)
 
     def draw_line(self, p1: Point, p2: Point):
         """
@@ -42,13 +46,13 @@ class Cursor:
         line = Line(p1, p2)
         points = line.list_points()
         for point in points:
-            self.place_letter(point, "x")
+            self.place_letter(point)
 
-    def draw_rect(self, x: int, y: int, height: int, width: int):
-        rect = Rectangle(Point(x, y), height, width)
+    def draw_rect(self, point: Point, height: int, width: int):
+        rect = Rectangle(point, height, width)
         points = rect.list_points()
         for point in points:
-            self.place_letter(point, "x")
+            self.place_letter(point)
 
     def draw_circle(self, x: int, y: int, radius: int):
         pass
