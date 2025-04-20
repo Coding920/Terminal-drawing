@@ -95,37 +95,44 @@ class Line:
 
 
 class Rectangle:
-    def __init__(self, upper_corner: Point, height: int, width: int):
-        self.x = upper_corner.x
-        self.y = upper_corner.y
-        self.letter = upper_corner.letter
-        self.height = height
-        self.width = width
+    def __init__(self,
+                 top_left: Point,
+                 top_right: Point,
+                 bottom_left: Point,
+                 bottom_right: Point):
+        self.top_left = top_left
+        self.top_right = top_right
+        self.bottom_left = bottom_left
+        self.bottom_right = bottom_right
 
-    def list_points(self):
+    def list_points(self) -> list[Point]:
         points = []
-        lines = []
-        lines.append(Line(Point(self.x, self.y, self.letter),
-                          Point(self.x, self.y + self.height, self.letter)))
-        lines.append(Line(Point(self.x, self.y + self.height, self.letter),
-                          Point(self.x + self.width, self.y + self.height, self.letter)))
-        lines.append(Line(Point(self.x + self.width, self.y + self.height, self.letter),
-                          Point(self.x + self.width, self.y, self.letter)))
-        lines.append(Line(Point(self.x + self.width, self.y, self.letter),
-                          Point(self.x, self.y, self.letter)))
-        for line in lines:
-            points.extend(line.list_points())
+        top = Line(self.top_left, self.top_right)
+        right = Line(self.top_right, self.bottom_right)
+        bottom = Line(self.bottom_left, self.bottom_right)
+        left = Line(self.bottom_left, self.top_left)
+        points.extend(top.list_points())
+        points.extend(right.list_points())
+        points.extend(bottom.list_points())
+        points.extend(left.list_points())
         return points
 
 
 class Triangle:
     def __init__(self, p1: Point, p2: Point, p3: Point):
-        self.x1 = p1.x
-        self.x2 = p2.x
-        self.x3 = p3.x
-        self.y1 = p1.y
-        self.y2 = p2.y
-        self.y3 = p3.y
+        self.p1 = p1
+        self.p2 = p2
+        self.p3 = p3
+
+    def list_points(self) -> list[Point]:
+        points = []
+        sides = []
+        sides.append(Line(self.p1, self.p2))
+        sides.append(Line(self.p2, self.p3))
+        sides.append(Line(self.p3, self.p1))
+        for side in sides:
+            points.extend(side.list_points())
+        return points
 
 
 class Circle:

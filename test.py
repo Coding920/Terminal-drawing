@@ -3,13 +3,11 @@ from cursor import Cursor
 import shapes as s
 
 cursor = Cursor()
-for i in range(50):
-    cursor.cursor_invisible()
-    upper_corner = s.Point(5 + i, 5 + i, "*")
-    cursor.draw_rect(upper_corner, 20, 20)
-    time.sleep(.1)
-    cursor.clear_screen()
-cursor.cursor_visible()
+cursor.draw_triangle(
+    s.Point(12, 12, "x"),
+    s.Point(24, 24, "x"),
+    s.Point(0, 24, "x")
+)
 cursor.return_home()
 
 # Idea for an ascii shape editor?
