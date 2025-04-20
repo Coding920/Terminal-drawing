@@ -140,9 +140,32 @@ class Circle:
         self.x = center.x
         self.y = center.y
         self.radius = radius
+        self.letter = center.letter
 
-    def list_points():
-        pass
+    def list_points(self):
+        points = []
+        x = 0
+        y = -self.radius
+        # If decision is 0 == on circ line, > 0 outside, else inside
+        decision = -self.radius + 0.25
+        while x < -y:
+            if decision > 0:
+                y += 1
+                decision += 2*(x+y) + 1
+            else:
+                decision += 2*x + 1
+
+            points.append(Point(self.x + x, self.y + y, self.letter))
+            points.append(Point(self.x - x, self.y + y, self.letter))
+            points.append(Point(self.x + x, self.y - y, self.letter))
+            points.append(Point(self.x - x, self.y - y, self.letter))
+            points.append(Point(self.x - x, self.y - y, self.letter))
+            points.append(Point(self.x + y, self.y + x, self.letter))
+            points.append(Point(self.x + y, self.y - x, self.letter))
+            points.append(Point(self.x - y, self.y + x, self.letter))
+            points.append(Point(self.x - y, self.y - x, self.letter))
+            x += 1
+        return points
 
 
 def _reduce_fraction(numerator, denominator) -> tuple[int]:

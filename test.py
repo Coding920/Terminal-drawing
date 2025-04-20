@@ -8,6 +8,8 @@ cursor = Cursor()
 def main():
     cursor.clear_screen()
     rect_demo()
+    circle_demo()
+    line_demo()
     cursor.cursor_visible()
     cursor.return_home()
 
@@ -15,7 +17,7 @@ def main():
 def rect_demo():
     ofsx = 0  # Offset X
     ofsy = 0  # Offset Y
-    for i in range(11):
+    for _ in range(11):
         cursor.clear_screen()
         cursor.cursor_invisible()
         ofsx += 1
@@ -26,7 +28,7 @@ def rect_demo():
             s.Point(10+ofsx, 10+ofsy, "x")
         )
         time.sleep(0.05)
-    for i in range(1, 11):
+    for _ in range(1, 11):
         cursor.clear_screen()
         cursor.cursor_invisible()
         ofsy += 1
@@ -37,7 +39,7 @@ def rect_demo():
             s.Point(10+ofsx, 10+ofsy, "x")
         )
         time.sleep(0.05)
-    for i in range(1, 11):
+    for _ in range(1, 11):
         cursor.clear_screen()
         cursor.cursor_invisible()
         ofsx -= 1
@@ -48,7 +50,7 @@ def rect_demo():
             s.Point(10+ofsx, 10+ofsy, "x")
         )
         time.sleep(0.05)
-    for i in range(1, 11):
+    for _ in range(1, 11):
         cursor.clear_screen()
         cursor.cursor_invisible()
         ofsy -= 1
@@ -60,7 +62,7 @@ def rect_demo():
         )
         time.sleep(0.05)
     # Transform Rect
-    for i in range(16):
+    for _ in range(16):
         cursor.clear_screen()
         cursor.cursor_invisible()
         ofsx += 1
@@ -74,7 +76,7 @@ def rect_demo():
         time.sleep(0.05)
     # Rotate Rect
     ofsx, ofsy = 0, 0
-    for i in range(20):
+    for _ in range(20):
         cursor.clear_screen()
         cursor.cursor_invisible()
         ofsx += 1
@@ -88,6 +90,96 @@ def rect_demo():
         time.sleep(0.1)
 
 
+def circle_demo():
+    ofs = 0  # offset
+    for _ in range(11):
+        cursor.clear_screen()
+        cursor.cursor_invisible()
+        ofs += 1
+        cursor.draw_circle(
+            s.Point(20, 20, "x"),
+            8 + ofs
+        )
+        time.sleep(0.1)
+    time.sleep(0.5)
+    for _ in range(1, 16):
+        cursor.clear_screen()
+        cursor.cursor_invisible()
+        ofs -= 1
+        cursor.draw_circle(
+            s.Point(20, 20, "x"),
+            8 + ofs
+        )
+        time.sleep(0.1)
+    ofsx, ofsy = 0, 0
+    for _ in range(1, 16):
+        cursor.clear_screen()
+        cursor.cursor_invisible()
+        ofsx += 1
+        ofsy += 1
+        cursor.draw_circle(
+            s.Point(20+ofsx, 20+ofsy, "x"),
+            8 + ofs
+        )
+        time.sleep(0.1)
+    for _ in range(1, 16):
+        cursor.clear_screen()
+        cursor.cursor_invisible()
+        ofsx += 1
+        ofsy -= 1
+        cursor.draw_circle(
+            s.Point(20+ofsx, 20+ofsy, "x"),
+            8 + ofs
+        )
+        time.sleep(0.1)
+
+
+def line_demo():
+    ofsx = 0
+    for _ in range(15):
+        cursor.clear_screen()
+        cursor.cursor_invisible()
+        ofsx += 1
+        cursor.draw_line(
+            s.Point(30, 15, "x"),
+            s.Point(30+ofsx, 30)
+        )
+        time.sleep(0.1)
+    ofsx, ofsy = 0, 0
+    for _ in range(15):
+        cursor.clear_screen()
+        cursor.cursor_invisible()
+        ofsx += 1
+        ofsy += 1
+        cursor.draw_line(
+            s.Point(30, 15, "x"),
+            s.Point(45, 30)
+        )
+        cursor.draw_line(
+            s.Point(30-ofsx, 15+ofsy, "x"),
+            s.Point(45, 30)
+        )
+        time.sleep(0.1)
+    ofsx, ofsy = 0, 0
+    for _ in range(15):
+        cursor.clear_screen()
+        cursor.cursor_invisible()
+        ofsx += 1
+        ofsy += 1
+        cursor.draw_line(
+            s.Point(30, 15, "x"),
+            s.Point(45, 30)
+        )
+        cursor.draw_line(
+            s.Point(15, 30, "x"),
+            s.Point(45, 30)
+        )
+        cursor.draw_line(
+            s.Point(15, 30, "x"),
+            s.Point(45-ofsx, 30-ofsy)
+        )
+        time.sleep(0.1)
+
 # Idea for an ascii shape editor?
 # Tool to make ascii art easier to make
 
@@ -97,5 +189,6 @@ def rect_demo():
 #     s.Point(24, 24, "x"),
 #     s.Point(0, 24, "x")
 # )
+
 
 main()

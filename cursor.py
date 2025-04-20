@@ -61,8 +61,10 @@ class Cursor:
         points = triangle.list_points()
         self.place_points(points)
 
-    def draw_circle(self, x: int, y: int, radius: int):
-        pass
+    def draw_circle(self, center_point: Point, radius: int):
+        circle = Circle(center_point, radius)
+        points = circle.list_points()
+        self.place_points(points)
 
     def draw_custom_ascii(self, x, y, ascii):
         self.set_pos(Point(x, y))
