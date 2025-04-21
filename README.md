@@ -1,6 +1,7 @@
 # Terminal-drawing
 
 ![Terminal drawing demo](./readme_images/terminal-drawing.gif)
+
 This is a library designed to help drawing in the terminal. You use _Points_ on the screen, which correlate to the
 lines and columns of the terminal. Designed to work similarly to how you would use JavaScript to draw in a canvas.
 It implements Bresenham's line algorithm for drawing lines and uses the Midpoint circle algorithm to draw circles.
