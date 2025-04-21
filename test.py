@@ -10,6 +10,7 @@ def main():
     rect_demo()
     circle_demo()
     line_demo()
+    example()
     cursor.cursor_visible()
     cursor.return_home()
 
@@ -180,6 +181,52 @@ def line_demo():
         )
         time.sleep(0.1)
 
+
+class Example_Ship:
+    def __init__(self):
+        self.lowerleft = s.Point(10, 11, "x")
+        self.lowerright = s.Point(11, 11, "x")
+        self.head = s.Rectangle(
+            s.Point(10, 10, "x"),
+            s.Point(11, 10, "x"),
+            self.lowerleft,
+            self.lowerright
+        )
+        self.left_wing = s.Line(
+            self.lowerleft,
+            s.Point(8, 13)
+        )
+        self.left_engine = s.Circle(
+            s.Point(7, 14, "*"),
+            1
+        )
+        self.right_wing = s.Line(
+            self.lowerright,
+            s.Point(13, 13)
+        )
+        self.right_engine = s.Circle(
+            s.Point(14, 14, "*"),
+            1
+        )
+        self.parts = [
+            self.head,
+            self.left_wing,
+            self.left_engine,
+            self.right_wing,
+            self.right_engine
+        ]
+
+    def list_points(self) -> list[s.Point]:
+        points = []
+        for part in self.parts:
+            points.extend(part.list_points())
+        return points
+
+
+def example():
+    ship = Example_Ship()
+    cursor.place_points(ship.list_points())
+
 # Idea for an ascii shape editor?
 # Tool to make ascii art easier to make
 
@@ -191,4 +238,5 @@ def line_demo():
 # )
 
 
-main()
+if __name__ == "__main__":
+    main()
